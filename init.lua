@@ -4,9 +4,10 @@ local key2App = {
     e = 'Sublime Text',
     f = 'Finder',
     g = 'Google Chrome',
-    p = 'Zeplin',
+    r = 'UlyssesMac',
     m = 'Mail',
-    q = 'QQ',
+    p = 'Zeplin',
+    q = 'NeteaseMusic',
     t = 'iTerm',
     w = 'WeChat',
     x = 'Xcode',
@@ -25,7 +26,7 @@ local key2WindowMove = {
 }
 
 -- 如果切换屏幕有问题   读取一下屏幕数据，最后有读取显示器的方法
-local sortedScreenNames = {'DELL U2412M', 'DELL U3219Q', 'Color LCD'}
+local sortedScreenNames = {'VX2780-4K-HDU', 'DELL U3219Q', 'Built-in Retina Display'}
 
 local hyper = hs.hotkey.modal.new({}, nil)
 hyper.pressed = function() hyper:enter() end
@@ -135,7 +136,7 @@ function applicationWatcher(appName, eventType, appObject)
             appObject:selectMenuItem({"Window", "Bring All to Front"})
         end
 
-        if appName == "WeChat" then
+        if appName == "WeChat" or appName == "Ulysses" then
             ChangeInputSourceToChinese()
         end
 
@@ -163,11 +164,12 @@ function changeMousePosition(screenNum)
     if screenNum == 0 then
         currentScreenCenter = hs.mouse.getCurrentScreen():frame().center
         hs.mouse.setAbsolutePosition(currentScreenCenter)
+        return
     end
 
-    allScreens = hs.screen.allScreens()
-    screenCenterPosition = allScreens[screenNum]:frame().center
-
+    targetScreen = hs.screen(GetScreenIdByName(sortedScreenNames[screenNum]))
+    
+    screenCenterPosition = targetScreen:frame().center
     hs.mouse.setAbsolutePosition(screenCenterPosition)
 end
 
@@ -181,11 +183,13 @@ function changeWindowPosition(left)
 
     if left then
         if currentIdx - 1 > 0 then
-            win:moveToScreen(hs.screen.find(sortedScreenNames[currentIdx - 1]), false, true, 0)
+            targetScreenId = GetScreenIdByName(sortedScreenNames[currentIdx - 1])
+            win:moveToScreen(hs.screen(targetScreenId), false, true, 0)
         end
     else
         if currentIdx + 1 <= #(allScreens) then
-            win:moveToScreen(hs.screen.find(sortedScreenNames[currentIdx + 1]), false, true, 0)
+            targetScreenId = GetScreenIdByName(sortedScreenNames[currentIdx + 1])
+            win:moveToScreen(hs.screen(targetScreenId), false, true, 0)
         end
     end
 
@@ -194,10 +198,10 @@ end
 
 -- HotKey Binding Start
 hyper:bind({}, '0', function() changeMousePosition(0) end)
-hyper:bind({}, '1', function() changeMousePosition(3) end)
-hyper:bind({}, '2', function() changeMousePosition(1) end)
-hyper:bind({}, '3', function() changeMousePosition(2) end)
--- hyper:bind({}, '9', function() GetAllScreenName(); GetAllInputSourceName() end) 读取所有需要的配置，可以在 Console 中查看
+hyper:bind({}, '1', function() changeMousePosition(1) end)
+hyper:bind({}, '2', function() changeMousePosition(2) end)
+hyper:bind({}, '3', function() changeMousePosition(3) end)
+hyper:bind({}, '9', function() print(GetAllScreenName()); GetCurrentInputSourceID() end) --读取所有需要的配置，可以在 Console 中查看
 
 hyper:bind({}, 'return', function() windowMove(9) end)
 
@@ -241,11 +245,22 @@ function ObjectIndexInTable(object, table)
     return index[object]
 end
 
+function GetScreenIdByName(screenName)
+    allScreens = hs.screen.allScreens()
+    allScreenInfo = {}
+
+       for i=1,#allScreens do
+        allScreenInfo[allScreens[i]:name()] = allScreens[i]:id()
+    end
+    return allScreenInfo[screenName]
+end
+
 function GetAllScreenName()
     allScreens = hs.screen.allScreens()
 
     for i=1,#allScreens do
-        hs.console.printStyledtext(allScreens[i])
+        hs.console.printStyledtext(allScreens[i]:id())
+        hs.console.printStyledtext(allScreens[i]:name())
     end
 end
 
