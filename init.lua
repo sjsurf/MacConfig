@@ -2,16 +2,19 @@
 local key2App = {
     a = 'Safari',
     e = 'Sublime Text',
+    d = 'DingTalk',
     f = 'Finder',
     g = 'Google Chrome',
     r = 'UlyssesMac',
     m = 'Mail',
     p = 'Zeplin',
     q = 'NeteaseMusic',
+    s = 'Notion',
     t = 'iTerm',
     w = 'WeChat',
     x = 'Xcode',
-    l = 'Launchpad'
+    z = 'Visual Studio Code',
+    l = 'Launchpad',
 }
 
 local key2WindowMove = {
@@ -26,7 +29,7 @@ local key2WindowMove = {
 }
 
 -- 如果切换屏幕有问题   读取一下屏幕数据，最后有读取显示器的方法
-local sortedScreenNames = {'VX2780-4K-HDU', 'DELL U3219Q', 'Built-in Retina Display'}
+local sortedScreenNames = {'VX2780-4K-HDU', 'DELL U3219Q'}
 
 local hyper = hs.hotkey.modal.new({}, nil)
 hyper.pressed = function() hyper:enter() end
@@ -45,6 +48,7 @@ hs.hotkey.bind({'cmd'}, 'F19', screenMoveHyper.pressed, screenMoveHyper.released
 
 -- Window Functions Start
 function windowMove(direction)
+    -- print(hs.window.focusedWindow()
     local win = hs.window.focusedWindow()
     local winFrame = win:frame()
     local screen = win:screen()
