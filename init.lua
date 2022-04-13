@@ -1,6 +1,7 @@
 -- Virable Define
 local key2App = {
     a = 'Safari',
+		d = 'DingTalk',
     e = 'Sublime Text',
     d = 'DingTalk',
     f = 'Finder',
