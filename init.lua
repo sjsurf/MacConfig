@@ -1,7 +1,7 @@
 -- Virable Define
 local key2App = {
     a = 'Safari',
-		d = 'DingTalk',
+    d = 'DingTalk',
     e = 'Sublime Text',
     d = 'DingTalk',
     f = 'Finder',
@@ -15,7 +15,7 @@ local key2App = {
     w = 'WeChat',
     x = 'Xcode',
     z = 'Visual Studio Code',
-    l = 'Launchpad',
+    l = 'Launchpad'
 }
 
 local key2WindowMove = {
@@ -26,24 +26,30 @@ local key2WindowMove = {
     u = 5,
     i = 6,
     j = 7,
-    k = 8,
+    k = 8
 }
 
 -- 如果切换屏幕有问题   读取一下屏幕数据，最后有读取显示器的方法
-local sortedScreenNames = {'VX2780-4K-HDU', 'DELL U3219Q'}
+local sortedScreenNames = {'VX2780-4K-HDU', 'DELL U3219Q', 'Built-in Retina Display'}
 
 local hyper = hs.hotkey.modal.new({}, nil)
-hyper.pressed = function() hyper:enter() end
-hyper.released = function() hyper:exit() end
+hyper.pressed = function()
+    hyper:enter()
+end
+hyper.released = function()
+    hyper:exit()
+end
 
 local screenMoveHyper = hs.hotkey.modal.new({}, nil)
-screenMoveHyper.pressed = function() screenMoveHyper:enter() end
-screenMoveHyper.released = function() screenMoveHyper:exit() end
-
+screenMoveHyper.pressed = function()
+    screenMoveHyper:enter()
+end
+screenMoveHyper.released = function()
+    screenMoveHyper:exit()
+end
 
 hs.hotkey.bind({}, 'F19', hyper.pressed, hyper.released)
 hs.hotkey.bind({'cmd'}, 'F19', screenMoveHyper.pressed, screenMoveHyper.released)
-
 
 -- Virable Define
 
@@ -70,7 +76,7 @@ function windowMove(direction)
         winFrame.h = screenFrame.h
 
     elseif direction == 3 then
-        
+
         winFrame.x = screenFrame.x
         winFrame.y = screenFrame.y
         winFrame.w = screenFrame.w
@@ -112,7 +118,7 @@ function windowMove(direction)
         winFrame.h = screenFrame.h / 2
 
     elseif direction == 9 then
-    	winFrame.x = screenFrame.x
+        winFrame.x = screenFrame.x
         winFrame.y = screenFrame.y
         winFrame.w = screenFrame.w
         winFrame.h = screenFrame.h
@@ -127,7 +133,7 @@ end
 -- ChangeInputSource End
 
 function ChangeInputSourceToEnglish()
-    hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
+    hs.keycodes.currentSourceID("com.apple.keylayout.US")
 end
 
 function ChangeInputSourceToChinese()
@@ -145,7 +151,7 @@ function applicationWatcher(appName, eventType, appObject)
             ChangeInputSourceToChinese()
         end
 
-        if appName == "Xcode" or appName == "Safari" or appName == "iTerm" or appName == "Sublime Text" then
+        if appName == "Xcode" or appName == "Safari" or appName == "iTerm2" or appName == "Code" then
             ChangeInputSourceToEnglish()
         end
     end
@@ -154,7 +160,7 @@ end
 function reloadConfig(files)
     doReload = false
 
-    for _,file in pairs(files) do
+    for _, file in pairs(files) do
         if file:sub(-4) == ".lua" then
             doReload = true
         end
@@ -173,7 +179,7 @@ function changeMousePosition(screenNum)
     end
 
     targetScreen = hs.screen(GetScreenIdByName(sortedScreenNames[screenNum]))
-    
+
     screenCenterPosition = targetScreen:frame().center
     hs.mouse.setAbsolutePosition(screenCenterPosition)
 end
@@ -184,7 +190,7 @@ function changeWindowPosition(left)
     win = hs.window.focusedWindow()
     currentScreen = win:screen()
 
-    currentIdx =  ObjectIndexInTable(currentScreen:name(), sortedScreenNames)
+    currentIdx = ObjectIndexInTable(currentScreen:name(), sortedScreenNames)
 
     if left then
         if currentIdx - 1 > 0 then
@@ -202,42 +208,61 @@ end
 -- Normal Functions End
 
 -- HotKey Binding Start
-hyper:bind({}, '0', function() changeMousePosition(0) end)
-hyper:bind({}, '1', function() changeMousePosition(1) end)
-hyper:bind({}, '2', function() changeMousePosition(2) end)
-hyper:bind({}, '3', function() changeMousePosition(3) end)
-hyper:bind({}, '9', function() print(GetAllScreenName()); GetCurrentInputSourceID() end) --读取所有需要的配置，可以在 Console 中查看
+hyper:bind({}, '0', function()
+    changeMousePosition(0)
+end)
+hyper:bind({}, '1', function()
+    changeMousePosition(1)
+end)
+hyper:bind({}, '2', function()
+    changeMousePosition(2)
+end)
+hyper:bind({}, '3', function()
+    changeMousePosition(3)
+end)
+hyper:bind({}, '9', function()
+    print(GetAllScreenName());
+    GetCurrentInputSourceID()
+end) -- 读取所有需要的配置，可以在 Console 中查看
 
-hyper:bind({}, 'return', function() windowMove(9) end)
+hyper:bind({}, 'return', function()
+    windowMove(9)
+end)
 
-screenMoveHyper:bind({'cmd'}, 'Left', function() changeWindowPosition(true) end)
-screenMoveHyper:bind({'cmd'}, 'Right', function() changeWindowPosition(false) end)
+screenMoveHyper:bind({'cmd'}, 'Left', function()
+    changeWindowPosition(true)
+end)
+screenMoveHyper:bind({'cmd'}, 'Right', function()
+    changeWindowPosition(false)
+end)
 
 for key, app in pairs(key2App) do
 
-    hyper:bind({}, key, function() hs.application.launchOrFocus(app) end)
+    hyper:bind({}, key, function()
+        hs.application.launchOrFocus(app)
+    end)
 
 end
-
 
 for key, value in pairs(key2WindowMove) do
 
-    hyper:bind({}, key, function() windowMove(value) end)
+    hyper:bind({}, key, function()
+        windowMove(value)
+    end)
 
 end
 
-
 -- HotKey Binding End
 -- Watchers Start
---保存文件 Reload Config
+-- 保存文件 Reload Config
 myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
 hs.alert.show("Config loaded")
 
---应用程序 状态变更监视器
+-- 应用程序 状态变更监视器
 appWatcher = hs.application.watcher.new(applicationWatcher)
 appWatcher:start()
 
---Watchers End
+-- Watchers End
 
 -- Private Function Start
 function ObjectIndexInTable(object, table)
@@ -254,7 +279,7 @@ function GetScreenIdByName(screenName)
     allScreens = hs.screen.allScreens()
     allScreenInfo = {}
 
-       for i=1,#allScreens do
+    for i = 1, #allScreens do
         allScreenInfo[allScreens[i]:name()] = allScreens[i]:id()
     end
     return allScreenInfo[screenName]
@@ -263,7 +288,7 @@ end
 function GetAllScreenName()
     allScreens = hs.screen.allScreens()
 
-    for i=1,#allScreens do
+    for i = 1, #allScreens do
         hs.console.printStyledtext(allScreens[i]:id())
         hs.console.printStyledtext(allScreens[i]:name())
     end
