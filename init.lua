@@ -147,7 +147,7 @@ function applicationWatcher(appName, eventType, appObject)
             appObject:selectMenuItem({"Window", "Bring All to Front"})
         end
 
-        if appName == "WeChat" or appName == "Ulysses" then
+        if appName == "WeChat" or appName == "DingTalk" then
             ChangeInputSourceToChinese()
         end
 
