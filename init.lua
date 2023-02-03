@@ -248,12 +248,13 @@ for key, app in pairs(key2App) do
 						windowCount = WindowCountForApplication(appObject:name())
 
 						newWindowCommand = {"File", "New Window"}
-						canMultipleWindow = hs.application:findMenuItem(newWindowCommand)
+						canMultipleWindow = appObject:findMenuItem(newWindowCommand)
 
 						if windowCount > 0 or canMultipleWindow == nil then
 								hs.application.launchOrFocus(app)
 						else
 								appObject:selectMenuItem(newWindowCommand)
+								appObject:activate()
 						end
 				else
 						hs.application.launchOrFocus(app)
