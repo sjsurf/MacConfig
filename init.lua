@@ -243,9 +243,23 @@ end)
 for key, app in pairs(key2App) do
 
     hyper:bind({}, key, function()
-        hs.application.launchOrFocus(app)
-    end)
+				appObject = hs.appfinder.appFromName(app)
+				if appObject then
+						windowCount = WindowCountForApplication(appObject:name())
 
+						newWindowCommand = {"File", "New Window"}
+						canMultipleWindow = hs.application:findMenuItem(newWindowCommand)
+
+						if windowCount > 0 or canMultipleWindow == nil then
+								hs.application.launchOrFocus(app)
+						else
+								appObject:selectMenuItem(newWindowCommand)
+						end
+				else
+						hs.application.launchOrFocus(app)
+				end
+
+		end)
 end
 
 for key, value in pairs(key2WindowMove) do
@@ -268,6 +282,19 @@ appWatcher:start()
 
 -- Watchers End
 
+-- Application Window Functions Start
+function WindowCountForApplication(name)
+		wf = hs.window.filter
+		wf_safari = wf.new(false):setAppFilter(name, {currentSpace = true})
+
+		return #(wf_safari:getWindows())
+end
+
+function WindowsInCurrentMissionControl(name)
+
+end
+
+-- Application Window Functions End
 -- Private Function Start
 function ObjectIndexInTable(object, table)
 
