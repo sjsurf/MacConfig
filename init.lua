@@ -29,6 +29,8 @@ local key2WindowMove = {
     k = 8
 }
 
+local chineseInputAppNames = {"WeChat", "DingTalk", "Notion"}
+local englishInputAppNames = {"Xcode", "Safari", "iTerm2", "Code"}
 -- 如果切换屏幕有问题   读取一下屏幕数据，最后有读取显示器的方法
 local sortedScreenNames = {'VX2780-4K-HDU', 'DELL U3219Q', 'Built-in Retina Display'}
 
@@ -142,16 +144,18 @@ end
 
 -- Normal Functions Start
 function applicationWatcher(appName, eventType, appObject)
+    -- hs.console.printStyledtext(appName) -- 如果不确定App名字，可以放开注释在Console中查看
+
     if eventType == hs.application.watcher.activated then
         if appName == "Finder" then
             appObject:selectMenuItem({"Window", "Bring All to Front"})
         end
 
-        if appName == "WeChat" or appName == "DingTalk" then
+        if ObjectInTable(appName, chineseInputAppNames) then
             ChangeInputSourceToChinese()
         end
 
-        if appName == "Xcode" or appName == "Safari" or appName == "iTerm2" or appName == "Code" then
+        if ObjectInTable(appName, englishInputAppNames) then
             ChangeInputSourceToEnglish()
         end
     end
@@ -273,6 +277,15 @@ function ObjectIndexInTable(object, table)
     end
 
     return index[object]
+end
+
+function ObjectInTable(object, table)
+    for index, val in ipairs(table) do
+        if val == object then
+            return true
+        end
+    end
+    return false
 end
 
 function GetScreenIdByName(screenName)
