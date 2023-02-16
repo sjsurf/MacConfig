@@ -42,6 +42,8 @@ set listchars=tab:»■,trail:■
 set wildmenu
 set wildmode=longest:list,full
 
+let mapleader = ','
+
 "python
 let python_highlight_all=1
 au Filetype python set tabstop=4
@@ -56,11 +58,17 @@ autocmd Filetype python set foldlevel=99
 
 set nocompatible
 filetype off
+
+"NERDTree
+nnoremap <leader>n :NERDTreeFocus<CR>
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
+
 Plugin 'gmarik/Vundle.vim'
+Plugin 'preservim/nerdtree'
 
 "let g:python3_host_prog=/usr/local/bin/python3
 
@@ -73,4 +81,5 @@ let g:autoformat_remove_trailing_spaces = 0
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
 filetype plugin indent on    " required
