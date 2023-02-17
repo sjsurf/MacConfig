@@ -42,7 +42,7 @@ set listchars=tab:»■,trail:■
 set wildmenu
 set wildmode=longest:list,full
 
-let mapleader = ','
+set backspace=indent,eol,start
 
 "python
 let python_highlight_all=1
@@ -59,8 +59,27 @@ autocmd Filetype python set foldlevel=99
 set nocompatible
 filetype off
 
+"Self Addreviations
+:iabbrev @@ sjsurf@gmail.com
+
+"Self Key Mpping
+let mapleader = '~'
+
+inoremap <esc> <nop>
+inoremap jk <esc>
+
+vnoremap <leader>' <esc>`<i'<esc>`>ei'<esc>
+vnoremap <leader>" <esc>`<i"<esc>`>ei"<esc>
+
+nnoremap H ^
+nnoremap L g_
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>< viw<esc>a><esc>bi<<esc>lel
+
 "NERDTree
-nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>N :NERDTreeFocus<CR> :wincmd p<CR>
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
