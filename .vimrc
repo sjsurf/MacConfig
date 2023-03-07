@@ -67,12 +67,15 @@ let mapleader = '~'
 
 inoremap <esc> <nop>
 inoremap jk <esc>
+inoremap <leader>jq <esc>:%!gojq .<cr> :set syntax=json<cr>
 
+vnoremap H ^
+vnoremap L $
 vnoremap <leader>' <esc>`<i'<esc>`>ei'<esc>
 vnoremap <leader>" <esc>`<i"<esc>`>ei"<esc>
 
 nnoremap H ^
-nnoremap L g_
+nnoremap L $
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>< viw<esc>a><esc>bi<<esc>lel
@@ -86,6 +89,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 
+Plugin 'elzr/vim-json'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'preservim/nerdtree'
 
