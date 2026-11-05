@@ -80,29 +80,4 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>< viw<esc>a><esc>bi<<esc>lel
 
-"NERDTree
-nnoremap <leader>N :NERDTreeFocus<CR> :wincmd p<CR>
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" let Vundle manage Vundle, required
-
-Plugin 'elzr/vim-json'
-Plugin 'gmarik/Vundle.vim'
-Plugin 'preservim/nerdtree'
-
-"let g:python3_host_prog=/usr/local/bin/python3
-
-Plugin 'Chiel92/vim-autoformat'
-
-nnoremap <F6> :Autoformat<CR>
-let g:autoformat_autoindent = 0
-let g:autoformat_retab = 0
-let g:autoformat_remove_trailing_spaces = 0
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-
 filetype plugin indent on    " required
